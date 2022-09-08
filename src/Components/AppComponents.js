@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import ContextDemo from './Context-API/ContextDemo/ContextDemo'
+import LikeIdol from './Context-API/LikeIdol/LikeIdol'
+// import ContextDemo from './Context-API/ContextDemo/ContextDemo'
 // import DemoPureComponents from './PureComponent/DemoPureComponents'
 
 export default class AppComponents extends Component {
@@ -7,7 +8,8 @@ export default class AppComponents extends Component {
     return (
       <div>
         {/* <DemoPureComponents/> */}
-        <ContextDemo/>
+        {/* <ContextDemo/> */}
+        <LikeIdol/>
       </div>
     )
   }
