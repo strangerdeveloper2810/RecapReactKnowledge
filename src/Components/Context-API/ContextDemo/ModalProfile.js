@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ModalContext from "../Context/ModalContext";
 
 export default class ModalProfile extends Component {
   render() {
@@ -17,7 +18,11 @@ export default class ModalProfile extends Component {
             height={350}
           />
           <div className="card-body">
-            <h3 className="text-danger">Lượt thả tim: ❤️</h3>
+            <ModalContext.Consumer>
+              {(value) => {
+                return <h3 className="text-danger">Lượt thả tim: {value.stateLike} ❤️</h3>;
+              }}
+            </ModalContext.Consumer>
             <h4 className="card-title">Hot Girl </h4>
             <p className="card-text">Tuổi: 18</p>
           </div>
