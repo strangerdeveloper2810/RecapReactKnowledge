@@ -5,3 +5,45 @@
 - Context chia sẻ dữ liệu cho nhiều các component khác nhau tương tự Redux (theo 1 góc nhìn nào đó redux khá giống nhau chúng đều quản lý state tập trung rồi phân phối cho các component)
 
 - Context có 2 thành phần: Provider và Consumer. Trong đó Provider đóng vai trò là component quản lý các state sử dụng chung cho các component được nó bao phủ, Consumer đóng vai trò truy xuất dữ liệu từ state chứa trong Provider
+
+
+- Hướng dẫn setup Context cho project
+
+- Tạo thư mục Context để chứa context của project (Giống reducer bên redux):
+import React from "react";
+
+const tenContext = React.createContext();
+
+export default ModalContext;
+
+
+- Tạo thư mục Provider để lưu trữ các state và các phương thức state: 
+
+import React, { Component } from 'react';
+// import ModalContext vào
+import tenContext from '../Context/tenContext';
+
+
+export default class tenProvider extends Component {
+    // tổ chức các giá trị thay đỏi và các phương thức
+    state = {
+        // ở đây mình sẽ lấy ví dụ về like
+        like: 0,
+    }
+
+    setLike = () => {
+        this.setState({
+            like: this.state.like +1,
+        });
+    }
+    render() {
+        return(
+            
+            <tenContext.Provider>
+            // Phạm vị sử dụng context
+            {this.props.children}
+            </tenContext.Provider>
+        );
+    }
+}
+
