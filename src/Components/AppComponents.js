@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import LikeIdol from './Context-API/LikeIdol/LikeIdol'
+import BurgerApp from './ReduxApp/BurgerApp'
+// import LikeIdol from './Context-API/LikeIdol/LikeIdol'
 // import ContextDemo from './Context-API/ContextDemo/ContextDemo'
 // import DemoPureComponents from './PureComponent/DemoPureComponents'
 
@@ -9,7 +10,8 @@ export default class AppComponents extends Component {
       <div>
         {/* <DemoPureComponents/> */}
         {/* <ContextDemo/> */}
-        <LikeIdol/>
+        {/* <LikeIdol/> */}
+        <BurgerApp/>
       </div>
     )
   }
