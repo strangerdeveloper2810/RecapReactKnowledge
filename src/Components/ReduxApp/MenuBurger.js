@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { addFoodAction } from "../../redux/actions/BurgerActions";
 class MenuBurger extends Component {
   renderMenu = () => {
     const { burger, menu } = this.props;
@@ -8,9 +9,23 @@ class MenuBurger extends Component {
         <tr key={index}>
           <td>{propsMenu}</td>
           <td>
-            <button className="btn btn-danger">-</button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                this.props.dispatch(addFoodAction(propsMenu, -1));
+              }}
+            >
+              -
+            </button>
             {burger[propsMenu]}
-            <button className="btn btn-success">+</button>
+            <button
+              className="btn btn-success"
+              onClick={() => {
+                this.props.dispatch(addFoodAction(propsMenu, 1));
+              }}
+            >
+              +
+            </button>
           </td>
           <td>{price}</td>
           <td>{burger[propsMenu] * price}</td>
