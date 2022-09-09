@@ -1,6 +1,23 @@
 import React, { Component } from "react";
-
-export default class MenuBurger extends Component {
+import { connect } from "react-redux";
+class MenuBurger extends Component {
+  renderMenu = () => {
+    const { burger, menu } = this.props;
+    return Object.entries(menu).map(([propsMenu, price], index) => {
+      return (
+        <tr key={index}>
+          <td>{propsMenu}</td>
+          <td>
+            <button className="btn btn-danger">-</button>
+            {burger[propsMenu]}
+            <button className="btn btn-success">+</button>
+          </td>
+          <td>{price}</td>
+          <td>{burger[propsMenu] * price}</td>
+        </tr>
+      );
+    });
+  };
   render() {
     return (
       <div className="container">
@@ -16,50 +33,26 @@ export default class MenuBurger extends Component {
               </tr>
             </thead>
 
-            <tbody>
-              <tr>
-                <td>Salad</td>
-                <td>
-                  <button className="btn btn-danger">-</button>1
-                  <button className="btn btn-success">+</button>
-                </td>
-                <td>10</td>
-                <td>10</td>
-              </tr>
-
-              <tr>
-                <td>Cheese</td>
-                <td>
-                  <button className="btn btn-danger">-</button>1
-                  <button className="btn btn-success">+</button>
-                </td>
-                <td>20</td>
-                <td>20</td>
-              </tr>
-
-              <tr>
-                <td>Beef</td>
-                <td>
-                  <button className="btn btn-danger">-</button>1
-                  <button className="btn btn-success">+</button>
-                </td>
-                <td>55</td>
-                <td>55</td>
-              </tr>
-
-            </tbody>
+            <tbody>{this.renderMenu()}</tbody>
 
             <tfoot>
-                <tr>
-                    <td colSpan={4}>
-                        Thành tiền: 85
-                    </td>
-                </tr>
+              <tr>
+                <td colSpan={4}>Thành tiền: {this.props.total}</td>
+              </tr>
             </tfoot>
-
           </table>
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    burger: state.BurgerReducer.burger,
+    menu: state.BurgerReducer.menu,
+    total: state.BurgerReducer.total,
+  };
+};
+
+export default connect(mapStateToProps)(MenuBurger);
