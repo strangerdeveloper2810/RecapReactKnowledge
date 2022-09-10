@@ -76,7 +76,7 @@ export default class ValidationForm extends Component {
     let errrorsContent = "";
 
     for (let key in values) {
-        // values[key] là giá trị của từng values
+      // values[key] là giá trị của từng values
       if (values[key] === "") {
         valid = false;
         errrorsContent = `<p class="text-left"> <b class="text-danger">${key} is invalid!</b></p>`;
@@ -87,7 +87,7 @@ export default class ValidationForm extends Component {
     }
 
     for (let key in errors) {
-        // errors[key] là giá trị của từng <error></error>
+      // errors[key] là giá trị của từng <error></error>
       if (errors[key] !== "") {
         errrorsContent += `
             <p class="text-left"> <b class="text-danger">${key} is invalid!</b></p>`;
