@@ -5,7 +5,7 @@ export default class ValidationForm extends Component {
   state = {
     // tạo 2 object để binding kết quả và lỗi
     values: {
-      firstName: "a",
+      firstName: "",
       lastName: "",
       userName: "",
       email: "",
@@ -14,7 +14,7 @@ export default class ValidationForm extends Component {
     },
 
     errors: {
-      firstName: "a",
+      firstName: "",
       lastName: "",
       userName: "",
       email: "",
