@@ -112,6 +112,7 @@ export default class ValidationForm extends Component {
       confirmButtonText: "OK",
     });
   };
+  
   render() {
     return (
       <div className=" d-flex justify-content-center">
