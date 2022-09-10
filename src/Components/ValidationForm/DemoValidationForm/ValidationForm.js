@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import Swal from "sweetalert2";
 import "./ValidationForm.css";
 export default class ValidationForm extends Component {
   state = {
     // tạo 2 object để binding kết quả và lỗi
     values: {
-      firstName: "",
+      firstName: "a",
       lastName: "",
       userName: "",
       email: "",
@@ -13,7 +14,7 @@ export default class ValidationForm extends Component {
     },
 
     errors: {
-      firstName: "",
+      firstName: "a",
       lastName: "",
       userName: "",
       email: "",
@@ -24,7 +25,7 @@ export default class ValidationForm extends Component {
 
   handleChangeValue = (event) => {
     // type cho email
-    // name là tên của các thuộc tính có trong state 
+    // name là tên của các thuộc tính có trong state
     // value là giá trị của các thuộc tính có trong state
     const { name, value, type } = event.target;
     let newValues = { ...this.state.values, [name]: value };
@@ -60,10 +61,63 @@ export default class ValidationForm extends Component {
       errors: newErrors,
     });
   };
+
+  handleSubmit = (event) => {
+    //Cản trình duyệt submit reload lại trang
+    event.preventDefault();
+
+    //  Xét điều kiện khi submit
+    const { values, errors } = this.state;
+
+    // Biến xác định form hợp lệ
+    let valid = true;
+
+    let profileContent = "";
+    let errrorsContent = "";
+
+    for (let key in values) {
+        console.log(key);
+      if (values[key] === "") {
+        valid = false;
+        errrorsContent = `<p class="text-left"> <b class="text-danger">${key} is invalid!</b></p>`;
+      }
+      profileContent += `
+                <p class="text-left"> <b>${key}:</b> ${values[key]}</p>
+            `;
+    }
+
+    for (let key in errors) {
+      if (errors[key] !== "") {
+        errrorsContent += `
+            <p class="text-left"> <b class="text-danger">${key} is invalid!</b></p>`;
+        valid = false;
+      }
+    }
+
+    if (!valid) {
+      Swal.fire({
+        title: "Your profile!",
+        html: errrorsContent,
+        icon: "error", //success, error, warning, question
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+    // alert('Thành công!')
+    Swal.fire({
+      title: "Your profile!",
+      html: profileContent,
+      icon: "success", //success, error, warning, question
+      confirmButtonText: "OK",
+    });
+  };
   render() {
     return (
       <div className=" d-flex justify-content-center">
-        <form className="w-50 bg-info bg-gradient p-5 m-5">
+        <form
+          className="w-50 bg-info bg-gradient p-5 m-5"
+          onSubmit={this.handleSubmit}
+        >
           <h1 className="text-primary text-center p-3">User Profile</h1>
           <div className="container">
             <div className="row">
