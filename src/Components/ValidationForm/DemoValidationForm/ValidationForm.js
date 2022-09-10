@@ -2,23 +2,64 @@ import React, { Component } from "react";
 import "./ValidationForm.css";
 export default class ValidationForm extends Component {
   state = {
-    firstName: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
+    // tạo 2 object để binding kết quả và lỗi
+    values: {
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
+
+    errors: {
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
   };
 
-
   handleChangeValue = (event) => {
-    const {name, value} = event.target;
+    // type cho email
+    // name là tên của các thuộc tính có trong state 
+    // value là giá trị của các thuộc tính có trong state
+    const { name, value, type } = event.target;
+    let newValues = { ...this.state.values, [name]: value };
+    let newErrors = { ...this.state.errors };
+
+    if (value.trim() === "") {
+      newErrors[name] = name + " is required!";
+    } else {
+      newErrors[name] = "";
+    }
+
+    if (type === "email") {
+      const regexEmail =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if (!regexEmail.test(value)) {
+        newErrors[name] = name + " is invalid!";
+      } else {
+        newErrors[name] = "";
+      }
+    }
+
+    if (name === "passwordConfirm") {
+      if (value === newValues["password"]) {
+        newErrors[name] = "";
+      } else {
+        newErrors[name] = name + " is invalid!";
+      }
+    }
+
     this.setState({
-        [name]: value,
-    },()=>{
-        console.log(this.state);
+      values: newValues,
+      errors: newErrors,
     });
-  }
+  };
   render() {
     return (
       <div className=" d-flex justify-content-center">
@@ -28,19 +69,41 @@ export default class ValidationForm extends Component {
             <div className="row">
               <div className="col-6">
                 <div className="group">
-                  <input type="text" name="firstName" required onChange={(event)=>{this.handleChangeValue(event)}} />
+                  <input
+                    type="text"
+                    value={this.state.values.firstName}
+                    name="firstName"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>First Name</label>
+                  <span className="text-danger">
+                    {this.state.errors.firstName}
+                  </span>
                 </div>
               </div>
 
               <div className="col-6">
                 <div className="group">
-                  <input type="text" name="lastName" required onChange={(event)=>{this.handleChangeValue(event)}} />
+                  <input
+                    type="text"
+                    value={this.state.values.lastName}
+                    name="lastName"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>Last Name</label>
+                  <span className="text-danger">
+                    {this.state.errors.lastName}
+                  </span>
                 </div>
               </div>
             </div>
@@ -48,10 +111,21 @@ export default class ValidationForm extends Component {
             <div className="row">
               <div className="col-12">
                 <div className="group">
-                  <input type="text" name="userName" required onChange={(event)=>{this.handleChangeValue(event)}}/>
+                  <input
+                    type="text"
+                    value={this.state.values.userName}
+                    name="userName"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>User Name</label>
+                  <span className="text-danger">
+                    {this.state.errors.userName}
+                  </span>
                 </div>
               </div>
             </div>
@@ -59,10 +133,19 @@ export default class ValidationForm extends Component {
             <div className="row">
               <div className="col-12">
                 <div className="group">
-                  <input type="email" name="email" required onChange={(event)=>{this.handleChangeValue(event)}} />
+                  <input
+                    type="email"
+                    value={this.state.values.email}
+                    name="email"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>Email</label>
+                  <span className="text-danger">{this.state.errors.email}</span>
                 </div>
               </div>
             </div>
@@ -70,19 +153,41 @@ export default class ValidationForm extends Component {
             <div className="row">
               <div className="col-6">
                 <div className="group">
-                  <input type="password" name="password" required onChange={(event)=>{this.handleChangeValue(event)}} />
+                  <input
+                    type="password"
+                    value={this.state.values.password}
+                    name="password"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>Password</label>
+                  <span className="text-danger">
+                    {this.state.errors.password}
+                  </span>
                 </div>
               </div>
 
               <div className="col-6">
                 <div className="group">
-                  <input type="password" name="passwordConfirm" required onChange={(event)=>{this.handleChangeValue(event)}} />
+                  <input
+                    type="password"
+                    value={this.state.values.passwordConfirm}
+                    name="passwordConfirm"
+                    required
+                    onChange={(event) => {
+                      this.handleChangeValue(event);
+                    }}
+                  />
                   <span className="highlight"></span>
                   <span className="bar"></span>
                   <label>Password Confirm</label>
+                  <span className="text-danger">
+                    {this.state.errors.passwordConfirm}
+                  </span>
                 </div>
               </div>
             </div>
