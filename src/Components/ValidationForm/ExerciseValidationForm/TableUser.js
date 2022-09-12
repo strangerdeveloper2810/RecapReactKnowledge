@@ -1,9 +1,34 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class TableUser extends Component {
+class TableUser extends Component {
+  renderUserList = () => {
+    const { userList, typeOfUser } = this.props;
+    console.log(typeOfUser.name);
+    return userList.map((user, index) => {
+      return (
+        <tr key={index}>
+          <td>{user.id}</td>
+          <td>{user.account}</td>
+          <td>{user.fullName}</td>
+          <td>{user.password}</td>
+          <td>{user.email}</td>
+          <td>{user.phone}</td>
+          <td>{typeOfUser.name}</td>
+          <td>
+            <button className="btn btn-info me-2">Chỉnh sửa</button>
+            <button className="btn btn-danger">Xóa</button>
+          </td>
+        </tr>
+      );
+    });
+  };
   render() {
     return (
-      <div className="container-fluid mt-3" style={{backgroundColor: "rgb(124, 31, 243)"}}>
+      <div
+        className="container-fluid mt-3"
+        style={{ backgroundColor: "rgb(124, 31, 243)" }}
+      >
         <h1 className="text-info">Danh sách người dùng</h1>
         <div className="table-responsive">
           <table className="table table-primary text-center">
@@ -20,33 +45,8 @@ export default class TableUser extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>demo</td>
-                <td>Nguyễn Văn A</td>
-                <td>123456</td>
-                <td>demo@yahoo.com</td>
-                <td>0123456789</td>
-                <td>Khách Hàng</td>
-                <td>
-                    <button className="btn btn-info me-2">Chỉnh sửa</button>
-                    <button className="btn btn-danger">Xóa</button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-                <td>demo1</td>
-                <td>Nguyễn Văn B</td>
-                <td>123456</td>
-                <td>demo1@yahoo.com</td>
-                <td>0323456789</td>
-                <td>Quản Trị</td>
-                <td>
-                    <button className="btn btn-info me-2">Chỉnh sửa</button>
-                    <button className="btn btn-danger">Xóa</button>
-                </td>
-              </tr>
+              {/*  */}
+              {this.renderUserList()}
             </tbody>
           </table>
         </div>
@@ -54,3 +54,11 @@ export default class TableUser extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userList: state.ValidationFormReducer.userList,
+    typeOfUser:  state.ValidationFormReducer.typeOfUser
+  };
+};
+export default connect(mapStateToProps)(TableUser);

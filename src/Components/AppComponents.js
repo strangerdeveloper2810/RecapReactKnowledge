@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import ExValidationForm from './ValidationForm/ExerciseValidationForm/ExValidationForm'
+import Todolist from './Styled-Components/Todolist'
+// import ExValidationForm from './ValidationForm/ExerciseValidationForm/ExValidationForm'
 // import BurgerApp from './ReduxApp/BurgerApp'
 // import ValidationForm from './ValidationForm/DemoValidationForm/ValidationForm'
 // import LikeIdol from './Context-API/LikeIdol/LikeIdol'
@@ -15,7 +16,8 @@ export default class AppComponents extends Component {
         {/* <LikeIdol/> */}
         {/* <BurgerApp/> */}
         {/* <ValidationForm/> */}
-        <ExValidationForm/>
+        {/* <ExValidationForm/> */}
+        <Todolist/>
       </div>
     )
   }

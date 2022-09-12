@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Swal from "sweetalert2";
+import { arrUserData } from "./UserData";
 import "./ExValidationForm.css";
 export default class FormSignUp extends Component {
   state = {
@@ -64,46 +65,42 @@ export default class FormSignUp extends Component {
     }
 
     // switch (type) {
-    //   case "email":
-    //     {
-    //       const regexEmail =
-    //         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   case "email": {
+    //     const regexEmail =
+    //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    //       if (!regexEmail.test(value)) {
-    //         newErrors[name] = name + " is invalid";
-    //       } else {
-    //         newErrors[name] = "";
-    //       }
+    //     if (!regexEmail.test(value)) {
+    //       newErrors[name] = name + " is invalid";
+    //     } else {
+    //       newErrors[name] = "";
     //     }
     //     break;
-
-    //   case "password":
-    //     {
-    //       const regexPassword =
-    //         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-    //       if (regexPassword.test(value)) {
-    //         newErrors[name] = "";
-    //       } else {
-    //         newErrors[name] =
-    //           name +
-    //           " at least 8 characters, 1 number, 1 upper and lowercase !";
-    //       }
-    //     }
-    //     break;
-
-    //   case "phoneNumber":
-    //     {
-    //       const regexPhone = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
-    //       if (regexPhone.test(value)) {
-    //         newErrors[name] = "";
-    //       } else {
-    //         newErrors[name] = name + " Maximum phone number is 10 numbers";
-    //       }
-    //     }
-    //     break;
-    //   default: {
-    //     return ;
     //   }
+
+    //   case "password": {
+    //     const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    //     if (regexPassword.test(value)) {
+    //       newErrors[name] = "";
+    //     } else {
+    //       newErrors[name] =
+    //         name + " at least 8 characters, 1 number, 1 upper and lowercase !";
+    //     }
+    //     break;
+    //   }
+
+    //   case "phone": {
+    //     const regexPhone =
+    //       /(([03+[2-9]|05+[6|8|9]|07+[0|6|7|8|9]|08+[1-9]|09+[1-4|6-9]]){3})+[0-9]{7}\b/g;
+    //     if (regexPhone.test(value)) {
+    //       newErrors[name] = "";
+    //     } else {
+    //       newErrors[name] = name + " Maximum phone number is 10 number";
+    //     }
+    //     break;
+    //   }
+
+    //   default:
+    //     newErrors[name] =  name + " is invalid!";
     // }
 
     this.setState({
@@ -162,12 +159,28 @@ export default class FormSignUp extends Component {
       confirmButtonText: "OK",
     });
   };
+
+  renderChooseUser = () => {
+    return arrUserData.map((user, index) => {
+      return (
+        <option key={index} value={user.id}>
+          {user.name}
+        </option>
+      );
+    });
+  };
+
   render() {
     return (
       <div className="d-flex justify-content-center">
         <div className="backgroundContainer w-100">
           <h1 className="text-center">Form Đăng Ký</h1>
-          <form className="w-100">
+          <form
+            className="w-100"
+            onSubmit={(event) => {
+              this.handleSubmit(event);
+            }}
+          >
             <div className="container">
               <div className="row mt-4">
                 <div className="col-6">
@@ -277,13 +290,10 @@ export default class FormSignUp extends Component {
                 <div className="col-6">
                   <div className="group">
                     <span className="userID">Mã Loại Người Dùng</span>
-                    <select>
-                      <option>Khách Hàng</option>
-                      <option>Quản Trị</option>
-                    </select>
+                    <select>{this.renderChooseUser()}</select>
                     <span className="highlight"></span>
                     <span className="bar"></span>
-                    <span className="text-danger"></span>
+                    <span className="text-danger">{this.state.errors.id}</span>
                   </div>
                 </div>
               </div>

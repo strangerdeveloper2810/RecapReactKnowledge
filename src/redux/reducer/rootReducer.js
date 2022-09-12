@@ -1,9 +1,11 @@
 import {combineReducers} from "redux";
-import AppReducer from "./AppReducer";
 import BurgerReducer from "./BurgerReducer";
+import ValidationFormReducer from "./ValidationFormReducer";
+import TodolistReducer from "./TodolistReducer";
 const rootReducer = combineReducers({
-    AppReducer,
-    BurgerReducer
+    BurgerReducer,
+    ValidationFormReducer,
+    TodolistReducer
 });
 
 export default rootReducer;
