@@ -8,7 +8,11 @@ import { Button } from "./Components/Button";
 import { ThemeProvider } from "styled-components";
 import { arrTheme } from "./Themes/ThemeManager";
 import { connect } from "react-redux";
-import { addTaskAction } from "../../redux/actions/TodolistActions";
+import {
+  addTaskAction,
+  deleteTaskAction,
+  doneTaskAction,
+} from "../../redux/actions/TodolistActions";
 class Todolist extends Component {
   state = {
     taskName: "",
@@ -25,11 +29,21 @@ class Todolist extends Component {
               <i className="fa fa-edit"></i>
             </Button>
 
-            <Button className="btn btn-success bg-gradient ms-3">
+            <Button
+              className="btn btn-success bg-gradient ms-3"
+              onClick={() => {
+                this.props.dispatch(doneTaskAction(task.id));
+              }}
+            >
               <i className="fa fa-check"></i>
             </Button>
 
-            <Button className="btn btn-danger bg-gradient ms-3">
+            <Button
+              className="btn btn-danger bg-gradient ms-3"
+              onClick={() => {
+                this.props.dispatch(deleteTaskAction(task.id));
+              }}
+            >
               <i className="fa fa-trash"></i>
             </Button>
           </Th>
@@ -45,7 +59,12 @@ class Todolist extends Component {
         <Tr key={index}>
           <Th>{task.taskName}</Th>
           <Th className="text-end">
-            <Button className="btn btn-danger bg-gradient ms-3">
+            <Button
+              className="btn btn-danger bg-gradient ms-3"
+              onClick={() => {
+                this.props.dispatch(deleteTaskAction(task.id));
+              }}
+            >
               <i className="fa fa-trash"></i>
             </Button>
           </Th>
@@ -63,7 +82,7 @@ class Todolist extends Component {
   render() {
     return (
       <ThemeProvider theme={this.props.themeDefault}>
-        <Container className="w-50">
+        <Container className="w-75">
           <Dropdown>{this.renderTheme()}</Dropdown>
 
           <Heading2 className="mt-2">To Do List </Heading2>
@@ -78,15 +97,18 @@ class Todolist extends Component {
             }}
           ></TextField>
 
-          <Button className="btn btn-primary bg-gradient ms-3 mb-2" onClick={()=>{
-            let {taskName} = this.state;
-            let newTask = {
-              id: Date.now(),
-              taskName: taskName,
-              done: false,
-            };
-            this.props.dispatch(addTaskAction(newTask));
-          }}>
+          <Button
+            className="btn btn-primary bg-gradient ms-3 mb-2"
+            onClick={() => {
+              let { taskName } = this.state;
+              let newTask = {
+                id: Date.now(),
+                taskName: taskName,
+                done: false,
+              };
+              this.props.dispatch(addTaskAction(newTask));
+            }}
+          >
             <i className="fa fa-plus"></i> ADD TASK
           </Button>
 

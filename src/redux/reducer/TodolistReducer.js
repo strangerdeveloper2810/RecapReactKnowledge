@@ -1,5 +1,5 @@
 import { ToDoListDarkTheme } from "../../Components/Styled-Components/Themes/ToDoListDarkTheme";
-import { ADD_TASK } from "../types/TodolistTypes";
+import { ADD_TASK, DELETE_TASK, DONE_TASK } from "../types/TodolistTypes";
 import Swal from "sweetalert2";
 const initialState = {
   themeDefault: ToDoListDarkTheme,
@@ -24,7 +24,7 @@ const TodolistReducer = (state = initialState, action) => {
       }
 
       let taskListUpdate = [...state.taskList];
-      let index = taskListUpdate.findIndex(
+      const index = taskListUpdate.findIndex(
         (task) => task.taskName === action.newTask.taskName
       );
 
@@ -34,7 +34,7 @@ const TodolistReducer = (state = initialState, action) => {
           title: "Oops...",
           text: "Trùng task roài má nội ưiiiii!",
         });
-        return {...state};
+        return { ...state };
       }
       taskListUpdate.push(action.newTask);
       state.taskList = taskListUpdate;
@@ -45,6 +45,35 @@ const TodolistReducer = (state = initialState, action) => {
       });
 
       return { ...state };
+    }
+
+    case DONE_TASK: {
+      let taskListUpdate = [...state.taskList];
+      const index = taskListUpdate.findIndex(
+        (task) => task.id === action.taskId
+      );
+      console.log(index);
+      if (index !== -1) {
+        taskListUpdate[index].done = true;
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Xong task này roài à, 10 đỉmmm!",
+        });
+      }
+      state.taskList = taskListUpdate;
+      return { ...state };
+    }
+
+    case DELETE_TASK: {
+      let taskListUpdate = [...state.taskList];
+      let result = taskListUpdate.filter((task) => task.id !== action.taskId);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Xóa task thành cmn công!",
+      });
+      return { ...state, taskList: result };
     }
     default:
       return { ...state };
