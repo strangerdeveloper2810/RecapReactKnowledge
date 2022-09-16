@@ -14,6 +14,7 @@ import {
   doneTaskAction,
   changeThemeAction,
   editTaskAction,
+  updateTaskAction,
 } from "../../redux/actions/TodolistActions";
 class Todolist extends Component {
   state = {
@@ -136,7 +137,9 @@ class Todolist extends Component {
             <i className="fa fa-plus"></i> ADD TASK
           </Button>
 
-          <Button className="btn btn-success bg-gradient ms-3 mb-2">
+          <Button className="btn btn-success bg-gradient ms-3 mb-2" onClick={()=>{
+            this.props.dispatch(updateTaskAction(this.state.taskName));
+          }}>
             <i className="fa fa-upload"></i> UPDATE TASK
           </Button>
 

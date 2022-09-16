@@ -1,5 +1,5 @@
 import { ToDoListDarkTheme } from "../../Components/Styled-Components/Themes/ToDoListDarkTheme";
-import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK, EDIT_TASK } from "../types/TodolistTypes";
+import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK, EDIT_TASK, UPDATE_TASK } from "../types/TodolistTypes";
 import Swal from "sweetalert2";
 import { arrTheme } from "../../Components/Styled-Components/Themes/ThemeManager";
 const initialState = {
@@ -90,6 +90,21 @@ const TodolistReducer = (state = initialState, action) => {
 
     case EDIT_TASK: {
       return {...state, taskEdit: action.task}
+    }
+
+    case UPDATE_TASK: {
+      // Chỉnh sửa lại taskName trong taskEdit
+      state.taskEdit = {...state.taskEdit, taskName: action.taskName};
+
+      // Tìm trong taskList cập nhật lại taskEdit người dùng update
+      let taskListUpdate = [...state.taskList];
+
+      let index = taskListUpdate.findIndex(task => task.id === state.taskEdit.id);
+      if (index !== -1) {
+        taskListUpdate[index] = state.taskEdit;
+      }
+      state.taskList = taskListUpdate;
+      return {...state};
     }
     default:
       return { ...state };
