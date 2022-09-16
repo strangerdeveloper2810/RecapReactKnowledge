@@ -1,98 +1,120 @@
 import React, { Component } from "react";
-import { Button } from "./Components/Button";
 import { Container } from "./Components/Container";
 import { Dropdown } from "./Components/Dropdown";
-import { Heading3 } from "./Components/Heading";
+import { Heading2 } from "./Components/Heading";
 import { Table, Tbody, Th, Tr } from "./Components/Table";
 import { TextField } from "./Components/TextField";
-export default class Todolist extends Component {
+import { Button } from "./Components/Button";
+import { ThemeProvider } from "styled-components";
+import { arrTheme } from "./Themes/ThemeManager";
+import { connect } from "react-redux";
+import { addTaskAction } from "../../redux/actions/TodolistActions";
+class Todolist extends Component {
+  state = {
+    taskName: "",
+  };
+  renderTaskToDo = () => {
+    const { taskList } = this.props;
+    return taskList
+      .filter((task) => task.done !== true)
+      .map((task, index) => (
+        <Tr key={index}>
+          <Th>{task.taskName}</Th>
+          <Th className="text-end">
+            <Button className="btn btn-info bg-gradient ms-3">
+              <i className="fa fa-edit"></i>
+            </Button>
+
+            <Button className="btn btn-success bg-gradient ms-3">
+              <i className="fa fa-check"></i>
+            </Button>
+
+            <Button className="btn btn-danger bg-gradient ms-3">
+              <i className="fa fa-trash"></i>
+            </Button>
+          </Th>
+        </Tr>
+      ));
+  };
+
+  renderTaskCompleted = () => {
+    const { taskList } = this.props;
+    return taskList
+      .filter((task) => task.done === true)
+      .map((task, index) => (
+        <Tr key={index}>
+          <Th>{task.taskName}</Th>
+          <Th className="text-end">
+            <Button className="btn btn-danger bg-gradient ms-3">
+              <i className="fa fa-trash"></i>
+            </Button>
+          </Th>
+        </Tr>
+      ));
+  };
+
+  renderTheme = () => {
+    return arrTheme.map((theme, index) => (
+      <option key={index} value={theme.id}>
+        {theme.name}
+      </option>
+    ));
+  };
   render() {
     return (
-      <Container className="w-50">
-        <Dropdown>
-          <option>Dark Theme</option>
-          <option>Light Theme</option>
-          <option>Primary Theme</option>
-        </Dropdown>
+      <ThemeProvider theme={this.props.themeDefault}>
+        <Container className="w-50">
+          <Dropdown>{this.renderTheme()}</Dropdown>
 
-        <Heading3>To Do List</Heading3>
+          <Heading2 className="mt-2">To Do List </Heading2>
+          <TextField
+            label="Task Name"
+            className="w-50"
+            value={this.state.taskName}
+            onChange={(event) => {
+              this.setState({
+                taskName: event.target.value,
+              });
+            }}
+          ></TextField>
 
-        <TextField className="w-50 " label="Task name"></TextField>
+          <Button className="btn btn-primary bg-gradient ms-3 mb-2" onClick={()=>{
+            let {taskName} = this.state;
+            let newTask = {
+              id: Date.now(),
+              taskName: taskName,
+              done: false,
+            };
+            this.props.dispatch(addTaskAction(newTask));
+          }}>
+            <i className="fa fa-plus"></i> ADD TASK
+          </Button>
 
-        <Button className="btn btn-outline-secondary ms-3">
-          <i className="fa fa-plus"></i>
-          ADD TASK
-        </Button>
+          <Button className="btn btn-success bg-gradient ms-3 mb-2">
+            <i className="fa fa-upload"></i> UPDATE TASK
+          </Button>
 
-        <Button className="btn btn-outline-secondary ms-3">
-          <i className="fa fa-upload"></i>
-          UPDATE TASK
-        </Button>
+          <hr />
+          <Heading2>Task To Do</Heading2>
+          <Table>
+            <Tbody>{this.renderTaskToDo()}</Tbody>
+          </Table>
 
-        <hr />
+          <hr />
 
-        <Heading3>Task To Do</Heading3>
-
-        <Table>
-          <Tbody>
-            <Tr>
-              <Th>Learn VueJS</Th>
-              <Th>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className=" fa fa-edit"></i>
-                </Button>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-check"></i>
-                </Button>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-trash"></i>
-                </Button>
-              </Th>
-            </Tr>
-
-            <Tr>
-              <Th>Learn Angular</Th>
-              <Th>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-edit"></i>
-                </Button>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-check"></i>
-                </Button>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-trash"></i>
-                </Button>
-              </Th>
-            </Tr>
-          </Tbody>
-        </Table>
-
-        <hr />
-
-        <Heading3>Task Completed</Heading3>
-
-        <Table>
-          <Tbody>
-            <Tr>
-              <Th>Learn ReactJS</Th>
-              <Th>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-trash"></i>
-                </Button>
-              </Th>
-            </Tr>
-
-            <Tr>
-              <Th>Learn NodeJS</Th>
-              <Th>
-                <Button className="btn btn-outline-secondary me-3">
-                  <i className="fa fa-trash"></i>
-                </Button>
-              </Th>
-            </Tr>
-          </Tbody>
-        </Table>
-      </Container>
+          <Heading2>Task Complete</Heading2>
+          <Table>
+            <Tbody>{this.renderTaskCompleted()}</Tbody>
+          </Table>
+        </Container>
+      </ThemeProvider>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  themeDefault: state.TodolistReducer.themeDefault,
+  taskList: state.TodolistReducer.taskList,
+});
+
+export default connect(mapStateToProps)(Todolist);
