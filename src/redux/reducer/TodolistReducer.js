@@ -102,6 +102,12 @@ const TodolistReducer = (state = initialState, action) => {
       let index = taskListUpdate.findIndex(task => task.id === state.taskEdit.id);
       if (index !== -1) {
         taskListUpdate[index] = state.taskEdit;
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Cập nhật task thành cmn công!",
+        });
+
       }
       state.taskList = taskListUpdate;
       return {...state};
