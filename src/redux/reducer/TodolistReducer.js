@@ -1,6 +1,7 @@
 import { ToDoListDarkTheme } from "../../Components/Styled-Components/Themes/ToDoListDarkTheme";
-import { ADD_TASK, DELETE_TASK, DONE_TASK } from "../types/TodolistTypes";
+import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK } from "../types/TodolistTypes";
 import Swal from "sweetalert2";
+import { arrTheme } from "../../Components/Styled-Components/Themes/ThemeManager";
 const initialState = {
   themeDefault: ToDoListDarkTheme,
   taskList: [
@@ -74,6 +75,15 @@ const TodolistReducer = (state = initialState, action) => {
         text: "Xóa task thành cmn công!",
       });
       return { ...state, taskList: result };
+    }
+
+    case CHANGE_THEME: {
+      let theme = arrTheme.find(theme => theme.id == action.themeId);
+      console.log(theme);
+      if (theme) {
+        state.themeDefault = {...theme.theme};
+      }
+      return {...state};
     }
     default:
       return { ...state };

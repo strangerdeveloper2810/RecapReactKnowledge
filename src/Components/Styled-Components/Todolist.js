@@ -12,6 +12,7 @@ import {
   addTaskAction,
   deleteTaskAction,
   doneTaskAction,
+  changeThemeAction,
 } from "../../redux/actions/TodolistActions";
 class Todolist extends Component {
   state = {
@@ -83,7 +84,14 @@ class Todolist extends Component {
     return (
       <ThemeProvider theme={this.props.themeDefault}>
         <Container className="w-75">
-          <Dropdown>{this.renderTheme()}</Dropdown>
+          <Dropdown
+            onChange={(event) => {
+              let { value } = event.target;
+              this.props.dispatch(changeThemeAction(value));
+            }}
+          >
+            {this.renderTheme()}
+          </Dropdown>
 
           <Heading2 className="mt-2">To Do List </Heading2>
           <TextField
