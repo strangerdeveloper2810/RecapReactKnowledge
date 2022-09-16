@@ -1,5 +1,5 @@
 import { ToDoListDarkTheme } from "../../Components/Styled-Components/Themes/ToDoListDarkTheme";
-import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK } from "../types/TodolistTypes";
+import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK, EDIT_TASK } from "../types/TodolistTypes";
 import Swal from "sweetalert2";
 import { arrTheme } from "../../Components/Styled-Components/Themes/ThemeManager";
 const initialState = {
@@ -10,6 +10,7 @@ const initialState = {
     { id: 3, taskName: "Learn NextJS", done: false },
     { id: 4, taskName: "Learn NestJS", done: false },
   ],
+  taskEdit: {id:4 , taskName: "Learn NestJS", done: false}
 };
 
 const TodolistReducer = (state = initialState, action) => {
@@ -78,12 +79,17 @@ const TodolistReducer = (state = initialState, action) => {
     }
 
     case CHANGE_THEME: {
+      // eslint-disable-next-line eqeqeq
       let theme = arrTheme.find(theme => theme.id == action.themeId);
       console.log(theme);
       if (theme) {
         state.themeDefault = {...theme.theme};
       }
       return {...state};
+    }
+
+    case EDIT_TASK: {
+      return {...state, taskEdit: action.task}
     }
     default:
       return { ...state };
