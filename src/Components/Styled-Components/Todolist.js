@@ -19,6 +19,7 @@ import {
 class Todolist extends Component {
   state = {
     taskName: "",
+    disable: true,
   };
 
   renderTaskToDo = () => {
@@ -29,9 +30,19 @@ class Todolist extends Component {
         <Tr key={index}>
           <Th>{task.taskName}</Th>
           <Th className="text-end">
-            <Button className="btn btn-info bg-gradient ms-3" onClick={()=>{
-              this.props.dispatch(editTaskAction(task));
-            }}>
+            <Button
+              className="btn btn-info bg-gradient ms-3"
+              onClick={() => {
+                this.setState(
+                  {
+                    disable: false,
+                  },
+                  () => {
+                    this.props.dispatch(editTaskAction(task));
+                  }
+                );
+              }}
+            >
               <i className="fa fa-edit"></i>
             </Button>
 
@@ -89,7 +100,7 @@ class Todolist extends Component {
   // lifecycle tĩnh không truy xuất được bằng con trỏ this
   // static getDerivedStateFromProps (newProps, currentState) {
   //   // newProps: là props mới, props cũ là this.props(Không truy xuất được)
-  //   // currentState: là state hiện tại ứng với this.state   
+  //   // currentState: là state hiện tại ứng với this.state
 
   //   // Hoặc trả về state mới this.state
   //   let newState = {...currentState, taskName: newProps.taskEdit.taskName};
@@ -97,6 +108,7 @@ class Todolist extends Component {
   //   // Trả về null thì state giữ nguyên
   //   // return null;
   // }
+
   render() {
     return (
       <ThemeProvider theme={this.props.themeDefault}>
@@ -137,11 +149,35 @@ class Todolist extends Component {
             <i className="fa fa-plus"></i> ADD TASK
           </Button>
 
-          <Button className="btn btn-success bg-gradient ms-3 mb-2" onClick={()=>{
-            this.props.dispatch(updateTaskAction(this.state.taskName));
-          }}>
-            <i className="fa fa-upload"></i> UPDATE TASK
-          </Button>
+          {this.state.disable ? (
+            <Button
+              disable
+              className="btn btn-success bg-gradient ms-3 mb-2"
+              onClick={() => {
+                this.props.dispatch(updateTaskAction(this.state.taskName));
+              }}
+            >
+              <i className="fa fa-upload"></i> UPDATE TASK
+            </Button>
+          ) : (
+            <Button
+              className="btn btn-success bg-gradient ms-3 mb-2"
+              onClick={() => {
+                let {taskName} = this.state;
+                this.setState(
+                  {
+                    disable: true,
+                    taskName: ""
+                  },
+                  () => {
+                    this.props.dispatch(updateTaskAction(taskName));
+                  }
+                );
+              }}
+            >
+              <i className="fa fa-upload"></i> UPDATE TASK
+            </Button>
+          )}
 
           <hr />
           <Heading2>Task To Do</Heading2>
@@ -162,12 +198,11 @@ class Todolist extends Component {
 
   // Đây là lifecycle trả về props cũ và state cũ của component trước khi render (lifecycle chạy sau render)
   componentDidUpdate(prevProps, prevState) {
-
     // So sánh nếu như props trước đó (taskEdit trước mà khác với taskEdit hiện tại thì mình mới setState)
 
-    if(prevProps.taskEdit.id !== this.props.taskEdit.id) {
+    if (prevProps.taskEdit.id !== this.props.taskEdit.id) {
       this.setState({
-        taskName: this.props.taskEdit.taskName
+        taskName: this.props.taskEdit.taskName,
       });
     }
   }
@@ -176,7 +211,7 @@ class Todolist extends Component {
 const mapStateToProps = (state) => ({
   themeDefault: state.TodolistReducer.themeDefault,
   taskList: state.TodolistReducer.taskList,
-  taskEdit: state.TodolistReducer.taskEdit
+  taskEdit: state.TodolistReducer.taskEdit,
 });
 
 export default connect(mapStateToProps)(Todolist);

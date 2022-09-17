@@ -1,16 +1,25 @@
 import { ToDoListDarkTheme } from "../../Components/Styled-Components/Themes/ToDoListDarkTheme";
-import { ADD_TASK, CHANGE_THEME, DELETE_TASK, DONE_TASK, EDIT_TASK, UPDATE_TASK } from "../types/TodolistTypes";
+import {
+  ADD_TASK,
+  CHANGE_THEME,
+  DELETE_TASK,
+  DONE_TASK,
+  EDIT_TASK,
+  UPDATE_TASK,
+} from "../types/TodolistTypes";
 import Swal from "sweetalert2";
 import { arrTheme } from "../../Components/Styled-Components/Themes/ThemeManager";
 const initialState = {
   themeDefault: ToDoListDarkTheme,
   taskList: [
-    { id: 1, taskName: "Learn ReactJS", done: true },
-    { id: 2, taskName: "Learn Angular", done: true },
-    { id: 3, taskName: "Learn NextJS", done: false },
-    { id: 4, taskName: "Learn NestJS", done: false },
+    // { id: 1, taskName: "Learn ReactJS", done: true },
+    // { id: 2, taskName: "Learn Angular", done: true },
+    // { id: 3, taskName: "Learn NextJS", done: false },
+    // { id: 4, taskName: "Learn NestJS", done: false },
+    
   ],
-  taskEdit: {id:4 , taskName: "Learn NestJS", done: false}
+  // taskEdit: { id: -1, taskName: "", done: false },
+  taskEdit: {},
 };
 
 const TodolistReducer = (state = initialState, action) => {
@@ -80,26 +89,28 @@ const TodolistReducer = (state = initialState, action) => {
 
     case CHANGE_THEME: {
       // eslint-disable-next-line eqeqeq
-      let theme = arrTheme.find(theme => theme.id == action.themeId);
+      let theme = arrTheme.find((theme) => theme.id == action.themeId);
       console.log(theme);
       if (theme) {
-        state.themeDefault = {...theme.theme};
+        state.themeDefault = { ...theme.theme };
       }
-      return {...state};
+      return { ...state };
     }
 
     case EDIT_TASK: {
-      return {...state, taskEdit: action.task}
+      return { ...state, taskEdit: action.task };
     }
 
     case UPDATE_TASK: {
       // Chỉnh sửa lại taskName trong taskEdit
-      state.taskEdit = {...state.taskEdit, taskName: action.taskName};
+      state.taskEdit = { ...state.taskEdit, taskName: action.taskName };
 
       // Tìm trong taskList cập nhật lại taskEdit người dùng update
       let taskListUpdate = [...state.taskList];
 
-      let index = taskListUpdate.findIndex(task => task.id === state.taskEdit.id);
+      let index = taskListUpdate.findIndex(
+        (task) => task.id === state.taskEdit.id
+      );
       if (index !== -1) {
         taskListUpdate[index] = state.taskEdit;
         Swal.fire({
@@ -107,10 +118,10 @@ const TodolistReducer = (state = initialState, action) => {
           title: "Success",
           text: "Cập nhật task thành cmn công!",
         });
-
       }
       state.taskList = taskListUpdate;
-      return {...state};
+      state.taskEdit = { id: -1, taskName: "", done: false };
+      return { ...state };
     }
     default:
       return { ...state };
